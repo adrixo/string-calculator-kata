@@ -51,4 +51,15 @@ class StringCalculatorShould {
         assertThat(calculator.add(input)).isEqualTo(expectedResult);
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "'//;1,2,3;4', 6",
+            "'//;1\n2,3;4', 10",
+            "'//;1;2\n3', 6",
+    })
+    public void
+    step_4_custom_separators(String input, int expectedResult) {
+        assertThat(calculator.add(input)).isEqualTo(expectedResult);
+    }
+
 }
