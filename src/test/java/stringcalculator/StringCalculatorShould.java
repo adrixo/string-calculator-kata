@@ -66,4 +66,11 @@ class StringCalculatorShould {
             calculator.add("1,2,-2");
         });
     }
+
+    @Test public void
+    step_6_ignore_numbers_bigger_than_1000() {
+        assertThrows(NumberTooBig.class, ()-> {
+            calculator.add("1001,2");
+        });
+    }
 }
