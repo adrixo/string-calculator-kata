@@ -30,4 +30,14 @@ class StringCalculatorShould {
     step_1_add_two_separated_numbers(String input, int expectedResult) {
         assertThat(calculator.add(input)).isEqualTo(expectedResult);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "'1,2,3,4,5', 15",
+            "'1,2,3,4,5,6,7,8,9', 45",
+    })
+    public void
+    step_2_arbitrary_number_size(String input, int expectedResult) {
+        assertThat(calculator.add(input)).isEqualTo(expectedResult);
+    }
 }
