@@ -42,15 +42,15 @@ public class InputParser {
     }
 
     private String getCustomSeparator(String input) {
-        String character = String.valueOf(input.charAt(2));
-        String separator = null;
-        if (character.equals("[")) {
-            int separatorClose = input.indexOf("]");
-            separatorClose++;
-            separator = "["+ input.substring(2, separatorClose) +"]";
-        } else {
-            separator = character;
+        int customSeparatorIndex = 2;
+        char character = input.charAt(customSeparatorIndex);
+
+        if (input.charAt(customSeparatorIndex) != '[') {
+            return String.valueOf(character);
         }
-        return separator;
+
+        int separatorClose = input.indexOf("]") + 1;
+        return "["+ input.substring(customSeparatorIndex, separatorClose) +"]";
+
     }
 }
