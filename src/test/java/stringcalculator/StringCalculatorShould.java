@@ -78,6 +78,6 @@ class StringCalculatorShould {
     step_7_arbitrary_length_custom_separators() throws NumberTooBig, NegativesNotAllowed {
         assertThat(calculator.add("//[****]1,2****3")).isEqualTo(6);
     }
-
+    
 
 }

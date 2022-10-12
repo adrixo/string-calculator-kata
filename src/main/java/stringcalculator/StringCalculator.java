@@ -2,7 +2,6 @@ package stringcalculator;
 
 public class StringCalculator {
 
-    private static String character;
     private String separators = ",|\n";
 
     public int add(String input) throws NegativesNotAllowed, NumberTooBig {
@@ -38,7 +37,7 @@ public class StringCalculator {
     }
 
     private static String getCustomSeparator(String input) {
-        character = String.valueOf(input.charAt(2));
+        String character = String.valueOf(input.charAt(2));
         String separator = null;
         // KLDG: Coupling between split/getCustomSeparator
         // due to split logic and new feature
