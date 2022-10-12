@@ -4,7 +4,7 @@ public class StringCalculator {
 
     private String separators = ",|\n";
 
-    public int add(String input) {
+    public int add(String input) throws NegativesNotAllowed {
         if (hasCustomSeparator(input)) {
             addSeparator(input);
         }
@@ -41,12 +41,19 @@ public class StringCalculator {
         return stringInput[0].equals("");
     }
 
-    private static int sum(String[] stringInput) {
+    private static int sum(String[] stringInput) throws NegativesNotAllowed {
         int result = 0;
-        for(String number : stringInput) {
-            result += Integer.parseInt(number);
+        for(String strNumber : stringInput) {
+            int number = Integer.parseInt(strNumber);
+            validateNumber(number);
+            result += number;
         }
         return result;
+    }
+
+    private static void validateNumber(int number) throws NegativesNotAllowed {
+        if (number < 0)
+            throw new NegativesNotAllowed();
     }
 
 }
