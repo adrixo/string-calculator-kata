@@ -25,7 +25,7 @@ class StringCalculatorShould {
             "'4', 4",
     })
     public void
-    step_1_add_two_separated_numbers(String input, int expectedResult) throws NegativesNotAllowed {
+    step_1_add_two_separated_numbers(String input, int expectedResult) throws NegativesNotAllowed, NumberTooBig {
         assertThat(calculator.add(input)).isEqualTo(expectedResult);
     }
 
@@ -35,7 +35,7 @@ class StringCalculatorShould {
             "'1,2,3,4,5,6,7,8,9', 45",
     })
     public void
-    step_2_arbitrary_number_size(String input, int expectedResult) throws NegativesNotAllowed {
+    step_2_arbitrary_number_size(String input, int expectedResult) throws NegativesNotAllowed, NumberTooBig {
         assertThat(calculator.add(input)).isEqualTo(expectedResult);
     }
 
@@ -45,7 +45,7 @@ class StringCalculatorShould {
             "'1,2\n3', 6",
     })
     public void
-    step_3_new_line_separator(String input, int expectedResult) throws NegativesNotAllowed {
+    step_3_new_line_separator(String input, int expectedResult) throws NegativesNotAllowed, NumberTooBig {
         assertThat(calculator.add(input)).isEqualTo(expectedResult);
     }
 
@@ -56,7 +56,7 @@ class StringCalculatorShould {
             "'//;1;2\n3', 6",
     })
     public void
-    step_4_custom_separators(String input, int expectedResult) throws NegativesNotAllowed {
+    step_4_custom_separators(String input, int expectedResult) throws NegativesNotAllowed, NumberTooBig {
         assertThat(calculator.add(input)).isEqualTo(expectedResult);
     }
 

@@ -4,7 +4,7 @@ public class StringCalculator {
 
     private String separators = ",|\n";
 
-    public int add(String input) throws NegativesNotAllowed {
+    public int add(String input) throws NegativesNotAllowed, NumberTooBig {
         if (hasCustomSeparator(input)) {
             addSeparator(input);
         }
@@ -41,7 +41,7 @@ public class StringCalculator {
         return stringInput[0].equals("");
     }
 
-    private static int sum(String[] stringInput) throws NegativesNotAllowed {
+    private static int sum(String[] stringInput) throws NegativesNotAllowed, NumberTooBig {
         int result = 0;
         for(String strNumber : stringInput) {
             int number = Integer.parseInt(strNumber);
@@ -51,9 +51,11 @@ public class StringCalculator {
         return result;
     }
 
-    private static void validateNumber(int number) throws NegativesNotAllowed {
+    private static void validateNumber(int number) throws NegativesNotAllowed, NumberTooBig {
         if (number < 0)
             throw new NegativesNotAllowed();
+        if (number > 1000)
+            throw new NumberTooBig();
     }
 
 }
