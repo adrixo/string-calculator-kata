@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StringCalculatorShould {
@@ -53,7 +53,7 @@ class StringCalculatorShould {
 
     @ParameterizedTest
     @CsvSource({
-            "'//;1,2,3;4', 6",
+            "'//;1,2,3;4', 10",
             "'//;1\n2,3;4', 10",
             "'//;1;2\n3', 6",
     })
