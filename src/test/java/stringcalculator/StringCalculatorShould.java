@@ -73,4 +73,11 @@ class StringCalculatorShould {
             calculator.add("1001,2");
         });
     }
+
+    @Test public void
+    step_7_arbitrary_length_custom_separators() throws NumberTooBig, NegativesNotAllowed {
+        assertThat(calculator.add("//[****]1,2****3")).isEqualTo(6);
+    }
+
+
 }
