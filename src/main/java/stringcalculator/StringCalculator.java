@@ -1,13 +1,14 @@
 package stringcalculator;
 
+import stringcalculator.exceptions.NegativesNotAllowed;
+import stringcalculator.exceptions.NumberTooBig;
+
 public class StringCalculator {
 
-    private String separators = ",|\n";
+    private InputParser inputParser = new InputParser();
 
     public int add(String input) throws NegativesNotAllowed, NumberTooBig {
-        if (hasCustomSeparator(input)) {
-            addSeparator(input);
-        }
+        inputParser.addCustomSeparators(input);
 
         String[] numbers = getNumberList(input);
 
@@ -18,8 +19,7 @@ public class StringCalculator {
     }
 
     private String[] getNumberList(String input) {
-        // step 7 also forced to change this function
-        if (hasCustomSeparator(input)) {
+        if (InputParser.hasCustomSeparator(input)) {
             int longSeparatorIndex = input.indexOf("]");
             if (longSeparatorIndex == -1)
                 input = input.substring(3);
@@ -28,33 +28,7 @@ public class StringCalculator {
                 input = input.substring(longSeparatorIndex);
             }
         }
-        return input.split(separators);
-    }
-
-    private void addSeparator(String input) {
-        String customSeparator = getCustomSeparator(input);
-        separators += "|" + customSeparator;
-    }
-
-    private static String getCustomSeparator(String input) {
-        String character = String.valueOf(input.charAt(2));
-        String separator = null;
-        // KLDG: Coupling between split/getCustomSeparator
-        // due to split logic and new feature
-        // (modify this logic requires split knowledge)
-        if (character.equals("[")) {
-            int separatorClose = input.indexOf("]");
-            separatorClose++;
-            // even if we have same logic using []...
-            separator = "["+ input.substring(2, separatorClose) +"]";
-        } else {
-            separator = character;
-        }
-        return separator;
-    }
-
-    private static boolean hasCustomSeparator(String input) {
-        return input.startsWith("//");
+        return input.split(inputParser.getSeparators());
     }
 
     private static boolean isEmpty(String[] stringInput) {
@@ -64,7 +38,6 @@ public class StringCalculator {
     private static int sum(String[] stringInput) throws NegativesNotAllowed, NumberTooBig {
         int result = 0;
         for(String strNumber : stringInput) {
-            // also the coupling at step 7 forced me to change "" behaviour
             int number = 0;
             if (!strNumber.equals(""))
                 number = Integer.parseInt(strNumber);
