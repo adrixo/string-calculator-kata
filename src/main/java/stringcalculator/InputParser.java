@@ -6,7 +6,20 @@ import java.util.StringJoiner;
 
 public class InputParser {
 
-    private ArrayList<String> separators = new ArrayList<String>(Arrays.asList(",", "\n"));
+    private final ArrayList<String> separators = new ArrayList<String>(Arrays.asList(",", "\n"));
+
+    public String[] getNumberList(String input) {
+        if (hasCustomSeparator(input)) {
+            int longSeparatorIndex = input.indexOf("]");
+            if (longSeparatorIndex == -1)
+                input = input.substring(3);
+            else {
+                longSeparatorIndex++;
+                input = input.substring(longSeparatorIndex);
+            }
+        }
+        return input.split(getSeparators());
+    }
 
     public String getSeparators() {
         StringJoiner joiner = new StringJoiner("|");

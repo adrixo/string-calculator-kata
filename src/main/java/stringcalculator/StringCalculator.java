@@ -5,30 +5,17 @@ import stringcalculator.exceptions.NumberTooBig;
 
 public class StringCalculator {
 
-    private InputParser inputParser = new InputParser();
+    private final InputParser inputParser = new InputParser();
 
     public int add(String input) throws NegativesNotAllowed, NumberTooBig {
         inputParser.addCustomSeparators(input);
 
-        String[] numbers = getNumberList(input);
+        String[] numbers = inputParser.getNumberList(input);
 
         if(isEmpty(numbers))
             return 0;
 
         return sum(numbers);
-    }
-
-    private String[] getNumberList(String input) {
-        if (InputParser.hasCustomSeparator(input)) {
-            int longSeparatorIndex = input.indexOf("]");
-            if (longSeparatorIndex == -1)
-                input = input.substring(3);
-            else {
-                longSeparatorIndex++;
-                input = input.substring(longSeparatorIndex);
-            }
-        }
-        return input.split(inputParser.getSeparators());
     }
 
     private static boolean isEmpty(String[] stringInput) {
