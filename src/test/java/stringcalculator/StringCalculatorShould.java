@@ -23,8 +23,6 @@ class StringCalculatorShould {
             "'1,2', 3",
             "'', 0",
             "'4', 4",
-            "'-1,2', 1",
-            "'-1,-2', -3",
     })
     public void
     step_1_add_two_separated_numbers(String input, int expectedResult) {
@@ -62,4 +60,10 @@ class StringCalculatorShould {
         assertThat(calculator.add(input)).isEqualTo(expectedResult);
     }
 
+    @Test public void
+    step_5_disallow_negatives() {
+        assertThrows(NegativesNotAllowed.class, ()-> {
+            calculator.add("1,2,-2");
+        });
+    }
 }
