@@ -79,6 +79,10 @@ class StringCalculatorShould {
     step_7_arbitrary_length_custom_separators() throws NumberTooBig, NegativesNotAllowed {
         assertThat(calculator.add("//[****]1,2****3")).isEqualTo(6);
     }
-    
+
+    @Test public void
+    step_8_multiple_arbitrary_separators() throws NumberTooBig, NegativesNotAllowed {
+        assertThat(calculator.add("//[*][;]\n1;2*3")).isEqualTo(6);
+    }
 
 }
