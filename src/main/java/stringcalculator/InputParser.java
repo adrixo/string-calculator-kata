@@ -6,7 +6,7 @@ import java.util.StringJoiner;
 
 public class InputParser {
 
-    private final ArrayList<String> separators = new ArrayList<String>(Arrays.asList(",", "\n"));
+    private final ArrayList<String> separators = new ArrayList<>(Arrays.asList(",", "\n"));
 
     public String[] getNumberList(String input) {
         if (hasCustomSeparator(input)) {
