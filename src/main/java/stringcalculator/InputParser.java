@@ -20,21 +20,19 @@ public class InputParser {
         return joiner.toString();
     }
 
-    public String[] getNumberList(String input) {
-        // Temporal coupling, addCustomSeparators should be called first
-        input = input.substring(separatorEndIndex);
-        return input.split(getSeparators());
-    }
-
     static boolean hasCustomSeparator(String input) {
         return input.startsWith("//");
     }
 
+    private static boolean isSimpleCustomSeparator(String input, int customSeparatorIndex) {
+        return input.charAt(customSeparatorIndex) != '[';
+    }
+    
     public void addCustomSeparators(String input) {
         if (!hasCustomSeparator(input))
             return;
 
-        separatorEndIndex = 2;
+        separatorEndIndex = 2; // Breaks [S]olid + temporal coupling
         if (isSimpleCustomSeparator(input, 2)) {
             separators.add(Character.toString(input.charAt(2)));
             separatorEndIndex++;
@@ -63,8 +61,10 @@ public class InputParser {
            }
         }
     }
-
-    private static boolean isSimpleCustomSeparator(String input, int customSeparatorIndex) {
-        return input.charAt(customSeparatorIndex) != '[';
+    
+    public String[] getNumberList(String input) {
+        // Temporal coupling, addCustomSeparators should be called first
+        input = input.substring(separatorEndIndex);
+        return input.split(getSeparators());
     }
 }
