@@ -7,26 +7,23 @@ import java.util.StringJoiner;
 public class InputParser {
 
     private final ArrayList<String> separators = new ArrayList<>(Arrays.asList(",", "\n"));
-
-    public String[] getNumberList(String input) {
-        if (hasCustomSeparator(input)) {
-            int longSeparatorIndex = input.indexOf("]");
-            if (longSeparatorIndex == -1)
-                input = input.substring(3);
-            else {
-                longSeparatorIndex++;
-                input = input.substring(longSeparatorIndex);
-            }
-        }
-        return input.split(getSeparators());
-    }
+    private int separatorEndIndex = 0;
 
     public String getSeparators() {
         StringJoiner joiner = new StringJoiner("|");
         for (String sep : separators) {
-            joiner.add(sep);
+            if (sep.length() > 1)
+                joiner.add("[" + sep + "]");
+            else
+                joiner.add(sep);
         }
         return joiner.toString();
+    }
+
+    public String[] getNumberList(String input) {
+        // Temporal coupling, addCustomSeparators should be called first
+        input = input.substring(separatorEndIndex);
+        return input.split(getSeparators());
     }
 
     static boolean hasCustomSeparator(String input) {
@@ -37,20 +34,37 @@ public class InputParser {
         if (!hasCustomSeparator(input))
             return;
 
-        String customSeparator = getCustomSeparator(input);
-        separators.add(customSeparator);
-    }
-
-    private String getCustomSeparator(String input) {
-        int customSeparatorIndex = 2;
-        char character = input.charAt(customSeparatorIndex);
-
-        if (input.charAt(customSeparatorIndex) != '[') {
-            return String.valueOf(character);
+        separatorEndIndex = 2;
+        if (isSimpleCustomSeparator(input, 2)) {
+            separators.add(Character.toString(input.charAt(2)));
+            separatorEndIndex++;
+            return;
         }
 
-        int separatorClose = input.indexOf("]") + 1;
-        return "["+ input.substring(customSeparatorIndex, separatorClose) +"]";
+        String stack = null;
+        for (String character : input.substring(2).split("")) {
+            separatorEndIndex++;
+           if (character.equals("[")) {
+               stack = "";
+           }
+           else if (character.equals("]")) {
+               separators.add(stack);
+               stack = null;
+           }
+           else if (character.equals("\n")) {
+               break;
+           }
+           else {
+               if (stack == null) {
+                   separatorEndIndex--;
+                   break;
+               }
+               stack += character;
+           }
+        }
+    }
 
+    private static boolean isSimpleCustomSeparator(String input, int customSeparatorIndex) {
+        return input.charAt(customSeparatorIndex) != '[';
     }
 }
