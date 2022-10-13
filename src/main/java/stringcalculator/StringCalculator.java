@@ -12,14 +12,7 @@ public class StringCalculator {
 
         String[] numbers = inputParser.getNumberList(input);
 
-        if(isEmpty(numbers))
-            return 0;
-
         return sum(numbers);
-    }
-
-    private static boolean isEmpty(String[] stringInput) {
-        return stringInput[0].equals("");
     }
 
     private static int sum(String[] stringInput) throws NegativesNotAllowed, NumberTooBig {
