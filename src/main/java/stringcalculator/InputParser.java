@@ -7,7 +7,8 @@ import java.util.StringJoiner;
 public class InputParser {
 
     private final ArrayList<String> separators = new ArrayList<>(Arrays.asList(",", "\n"));
-    private int separatorEndIndex = 0;
+    private static final int CUSTOM_SEPARATOR_INDEX = 2;
+    private static final int NO_CUSTOM_SEPARATOR_INDEX = 0;
 
     public String getSeparators() {
         StringJoiner joiner = new StringJoiner("|");
@@ -24,24 +25,50 @@ public class InputParser {
         return input.startsWith("//");
     }
 
-    private static boolean isSimpleCustomSeparator(String input, int customSeparatorIndex) {
-        return input.charAt(customSeparatorIndex) != '[';
+    private static boolean isSimpleCustomSeparator(String input) {
+        return input.charAt(CUSTOM_SEPARATOR_INDEX) != '[';
     }
-    
+
+    private int getInstructionNumberSeparatorIndex(String input) {
+        if (!hasCustomSeparator(input))
+            return NO_CUSTOM_SEPARATOR_INDEX;
+
+        if (isSimpleCustomSeparator(input)) {
+            return CUSTOM_SEPARATOR_INDEX;
+        }
+
+        boolean bracketIsOpen = false;
+        int complexCustomSeparatorIndex = CUSTOM_SEPARATOR_INDEX;
+        for (String character : input.substring(CUSTOM_SEPARATOR_INDEX).split("")) {
+            complexCustomSeparatorIndex++;
+            switch (character) {
+                case "[":
+                    bracketIsOpen = true;
+                    break;
+                case "]":
+                    bracketIsOpen = false;
+                    break;
+                case "\n":
+                        return complexCustomSeparatorIndex;
+                default:
+                    if (!bracketIsOpen) return --complexCustomSeparatorIndex;
+            }
+        }
+
+        return -1;
+    }
+
     public void addCustomSeparators(String input) {
         if (!hasCustomSeparator(input))
             return;
 
-        separatorEndIndex = 2; // Breaks [S]olid + temporal coupling
-        if (isSimpleCustomSeparator(input, 2)) {
-            separators.add(Character.toString(input.charAt(2)));
-            separatorEndIndex++;
+        if (isSimpleCustomSeparator(input)) {
+            separators.add(Character.toString(input.charAt(CUSTOM_SEPARATOR_INDEX)));
             return;
         }
 
         String stack = null;
-        for (String character : input.substring(2).split("")) {
-            separatorEndIndex++;
+        for (String character : input.substring(CUSTOM_SEPARATOR_INDEX).split("")) {
            if (character.equals("[")) {
                stack = "";
            }
@@ -54,7 +81,6 @@ public class InputParser {
            }
            else {
                if (stack == null) {
-                   separatorEndIndex--;
                    break;
                }
                stack += character;
@@ -63,8 +89,8 @@ public class InputParser {
     }
     
     public String[] getNumberList(String input) {
-        // Temporal coupling, addCustomSeparators should be called first
-        input = input.substring(separatorEndIndex);
-        return input.split(getSeparators());
+        int separatorEndIndex = getInstructionNumberSeparatorIndex(input);
+        String numbers = input.substring(separatorEndIndex);
+        return numbers.split(getSeparators());
     }
 }
