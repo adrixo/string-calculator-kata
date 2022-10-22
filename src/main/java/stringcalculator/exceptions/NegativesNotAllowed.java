@@ -1,4 +1,4 @@
 package stringcalculator.exceptions;
 
-public class NegativesNotAllowed extends Exception {
+public class NegativesNotAllowed extends RuntimeException {
 }

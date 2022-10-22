@@ -7,7 +7,7 @@ public class StringCalculator {
 
     private final InputParser inputParser = new InputParser();
 
-    public int add(String input) throws NegativesNotAllowed, NumberTooBig {
+    public int add(String input) {
         inputParser.addCustomSeparators(input);
 
         String[] numbers = inputParser.getNumberList(input);
@@ -15,7 +15,7 @@ public class StringCalculator {
         return sum(numbers);
     }
 
-    private static int sum(String[] stringInput) throws NegativesNotAllowed, NumberTooBig {
+    private static int sum(String[] stringInput) {
         int result = 0;
         for(String strNumber : stringInput) {
             int number = 0;
@@ -27,7 +27,7 @@ public class StringCalculator {
         return result;
     }
 
-    private static void validateNumber(int number) throws NegativesNotAllowed, NumberTooBig {
+    private static void validateNumber(int number) {
         if (number < 0)
             throw new NegativesNotAllowed();
         if (number > 1000)

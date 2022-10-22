@@ -1,4 +1,4 @@
 package stringcalculator.exceptions;
 
-public class NumberTooBig extends Exception {
+public class NumberTooBig extends RuntimeException{
 }
